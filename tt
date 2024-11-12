@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+project_dir="."
+venv_path="${project_dir}/venv"
+
+# Check if the virtual environment exists, and if not, create it
+if [ ! -d "$venv_path" ]; then
+    echo "TermTalk"
+    echo "--------"
+    echo "Virtual environment not found. Creating one..."
+    python3 -m venv "$venv_path"
+    
+    # Activate the virtual environment
+    source "$venv_path/bin/activate"
+    
+    # Ensure pip is up to date
+    pip3 install --upgrade pip
+    
+    # Install dependencies from requirements.txt
+    if [ -f "requirements.txt" ]; then
+        echo "Installing dependencies from requirements.txt..."
+        pip3 install -r requirements.txt
+    else
+        echo "requirements.txt not found. Skipping dependency installation."
+    fi
+else
+    # Activate the virtual environment
+    source "$venv_path/bin/activate"
+fi
+
+python cli.py "$@"
+
+deactivate
